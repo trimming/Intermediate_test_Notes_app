@@ -16,7 +16,7 @@ class Note:
     def verify_title(cls, title):
         if title.replace(' ', '') == '':
             raise TitleNameError("Заголовок не может быть пустой строкой!")
-        if len(title) > 30:
+        if len(title) > 50:
             raise TitleLengthError("Слишком длинное название заголовка!")
 
     @classmethod

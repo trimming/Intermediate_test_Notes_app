@@ -8,8 +8,8 @@ def importNotes(note):
         try:
             fh.write(json.dumps(note, ensure_ascii=False))
             print("Записи успешно сохранены.")
-        except:
-            print("ошибка")
+        except :
+            print("Ошибка записи!")
 
 
 def loadNotes():
