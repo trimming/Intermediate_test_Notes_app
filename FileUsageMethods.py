@@ -20,7 +20,6 @@ def loadNotes():
     with open("notes.json", "r", encoding="utf-8") as fh:
         try:
             notes = json.load(fh)
-            print("Записи успешно загружены.")
         except:
-            print("Ошибка")
+            raise FileNotFoundError
         return notes

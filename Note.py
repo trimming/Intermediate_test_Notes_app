@@ -38,7 +38,7 @@ class Note:
 
     @text.setter
     def text(self, text):
-        self.verify_title(text)
+        self.verify_text(text)
         self.__text = text
 
     @title.setter
@@ -60,7 +60,6 @@ class Note:
 
     def __repr__(self):
         return f"'title': {self.__title}, 'text': {self.__text}, 'date': {self.__date}"
-
 
     def get_note_dict(self):
         return {'title': self.__title, 'text': self.__text, 'date': self.__date}

@@ -1,5 +1,4 @@
 from FileUsageMethods import loadNotes
-from UserOutException import UserOutException
 
 
 # Метод запускает приложение 'Зметки' и загружает заметки из файла notes.json
@@ -35,7 +34,7 @@ def print_notes(notes_dict: dict, show=True) -> None:
 
 # Метод принимает на вход значение даты/времени для поиска и также индекс даты/времени
 # возвращает найденные заметки.
-def search_notes(value: str, index: int, mess: str) -> dict:
+def search_notes(value: str, index: int, mess: str) -> dict | None:
     load_notes = loadNotes()
     temp_list = list(filter(lambda x: x.get("date").split()[index] == value, load_notes.values()))
     result = {}
@@ -52,12 +51,13 @@ def search_notes(value: str, index: int, mess: str) -> dict:
 
 # Метод делает поисковой запрос по дате и возвращает заметку,
 # если записей не одна делает уточнение по времени
-def make_search_request() -> dict:
+def make_search_request() -> dict | None:
     while True:
         date = input("Для поиска введите дату заметки в формате дд-мм-гггг "
                      "или введите 0 для выхода из системы поиска: ")
         if date == '0':
-            raise UserOutException
+            print("Вы вышли из подраздела меню")
+            return None
         notes_found_by_date = search_notes(date, 0, 'эту дату')
         if len(notes_found_by_date) == 1:
             return notes_found_by_date
@@ -68,7 +68,8 @@ def make_search_request() -> dict:
                 note_time = input("Среди них есть нужная?\nВведите время последнего изменения в формате чч:мм:сс "
                                   "или введите 0 для выхода из системы поиска: ")
                 if note_time == '0':
-                    raise UserOutException
+                    print("Вы вышли из подраздела меню")
+                    return None
                 notes_found_by_time = search_notes(note_time, 1, 'это время')
                 if len(notes_found_by_time) == 0:
                     print_notes(notes_found_by_date)
@@ -78,5 +79,17 @@ def make_search_request() -> dict:
 
 # Метод делает выгрузку словаря записок из файла и добавляет новую запись
 def add_notes(dictionary: dict, notes_to_add: dict) -> dict:
-    dictionary.update(notes_to_add)
-    return dictionary
+    if dictionary is None:
+        return notes_to_add
+    else:
+        dictionary.update(notes_to_add)
+        return dictionary
+
+
+# Метод проверяет есть ли сохраненные заметки у пользователя
+def verify_notes_dict() -> bool:
+    load_notes = loadNotes()
+    if load_notes is None:
+        return True
+    else:
+        return False
